@@ -8,7 +8,7 @@ selenium/
 
 *.exe
 
-debug.log
+debug.log*
 
 data.json
 
