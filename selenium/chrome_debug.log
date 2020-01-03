@@ -1,0 +1,14 @@
+[28172:21884:0102/212523.113:INFO:CONSOLE(35)] "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.", source: https://howdy.tamu.edu/ResourceServingWebapp/rs/jquery/1.12.4/jquery-1.12.4.min.js (35)
+[28172:21884:0102/212526.764:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o", source: https://cas.tamu.edu/cas/login?service=https://howdy.tamu.edu/uPortal/Login&renew=true (0)
+[28172:21884:0102/212532.205:INFO:CONSOLE(1842)] "Mixed Content: The page at 'https://howdy.tamu.edu/uPortal/f/welcome/normal/render.uP' was loaded over a secure connection, but contains a form that targets an insecure endpoint 'http://www.tamu.edu/search/'. This endpoint should be made available over a secure connection.", source: https://howdy.tamu.edu/uPortal/f/welcome/normal/render.uP (1842)
+[28172:21884:0102/212532.242:INFO:CONSOLE(35)] "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.", source: https://howdy.tamu.edu/ResourceServingWebapp/rs/jquery/1.12.4/jquery-1.12.4.min.js (35)
+[28172:21884:0102/212532.523:INFO:CONSOLE(924)] "0
+", source: https://howdy.tamu.edu/uPortal/f/welcome/normal/render.uP (924)
+[28172:21884:0102/212536.751:INFO:CONSOLE(2197)] "[object Object]", source: https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/assets/modules/bannerWeb-mf.js (2197)
+[28172:21884:0102/212536.752:INFO:CONSOLE(2197)] "https://howdy.tamu.edu/", source: https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/assets/modules/bannerWeb-mf.js (2197)
+[28172:21884:0102/212539.766:INFO:CONSOLE(2197)] "[object Object]", source: https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/assets/modules/bannerWeb-mf.js (2197)
+[28172:21884:0102/212539.767:INFO:CONSOLE(2197)] "https://howdy.tamu.edu/", source: https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/assets/modules/bannerWeb-mf.js (2197)
+[28172:21884:0102/212544.938:INFO:CONSOLE(2197)] "[object Object]", source: https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/assets/modules/bannerWeb-mf.js (2197)
+[28172:21884:0102/212544.938:INFO:CONSOLE(2197)] "https://howdy.tamu.edu/", source: https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/assets/modules/bannerWeb-mf.js (2197)
+[28172:21884:0102/215143.018:WARNING:pref_notifier_impl.cc(40)] Pref observer for media_router.cast_allow_all_ips found at shutdown.
+[28172:21884:0102/215143.019:WARNING:pref_notifier_impl.cc(40)] Pref observer for browser.relaunch_notification_period found at shutdown.
