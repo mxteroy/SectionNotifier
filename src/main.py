@@ -19,7 +19,7 @@ from twilio.rest import Client
 def main():
     date = 202011
 
-    with open("src/data.json","r") as f:
+    with open("data.json","r") as f:
         d = f.read()
 
     data= json.loads(d)
@@ -37,7 +37,7 @@ def main():
 
     chrome_options.add_argument("user-data-dir=selenium") #save cookies
 
-    driver = webdriver.Chrome(executable_path='./chromedriver.exe', chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path='../chromedriver.exe', chrome_options=chrome_options)
 
     driver.get("https://howdy.tamu.edu/uPortal/normal/render.uP")
 
@@ -61,7 +61,7 @@ def main():
     #LOGIN TO CAS
     text_area = driver.find_element_by_id('username')
 
-    login = open('src/login.txt', 'r')
+    login = open('login.txt', 'r')
     loginInfo = login.read().splitlines()
     username = loginInfo[0]
     text_area.send_keys(username)
@@ -98,8 +98,6 @@ def main():
         time.sleep(3)
         driver.find_element_by_id(subject).click()
 
-
-
         driver.find_element_by_id('txt_courseNumber').clear()
         driver.find_element_by_id('txt_courseNumber').send_keys(courseNo)
 
@@ -129,9 +127,9 @@ def main():
                 message = message + '- ' + getAvailability(courseInfo[0], courseInfo[1], courseInfo[2]) + '\n'
                 foundOpen += 1
         
-        #if foundOpen:
-        message = client.messages.create(to=num, from_="+17739662304",
-                                    body="Section Notifier Test. Sorry Kim")
+        if foundOpen:
+            message = client.messages.create(to=num, from_="+17739662304",
+                                    body=message)
 
 
 if __name__ == '__main__':

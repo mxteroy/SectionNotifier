@@ -1,4 +1,4 @@
-*.txt
+credentials.txt
 
 .vscode/
 
@@ -11,3 +11,6 @@ selenium/
 debug.log
 
 data.json
+
+src/selenium
+
