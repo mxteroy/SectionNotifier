@@ -99,6 +99,7 @@ def main():
         driver.find_element_by_id(subject).click()
 
 
+
         driver.find_element_by_id('txt_courseNumber').clear()
         driver.find_element_by_id('txt_courseNumber').send_keys(courseNo)
 
