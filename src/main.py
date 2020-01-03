@@ -17,13 +17,26 @@ from twilio.rest import Client
 #last digit remains the same (means College Station campus)
 
 def main():
+    credentials = open('C:\\Users\\xarae\\Documents\\Projects\\SectionNotifier\\credentials.txt', 'r')
+    credentialsInfo = credentials.read().splitlines()
+
+    username = credentialsInfo[0]
+    password = credentialsInfo[1]
+    twilioSID = credentialsInfo[2]
+    twilioAUTH = credentialsInfo[3]
+    dataPath = credentialsInfo[4]
+    chromeDriverPath = credentialsInfo[5]
+    seleniumPath = credentialsInfo[6]
+    
     date = 202011
 
-    with open("data.json","r") as f:
+    #----------open data JSON----------------
+    with open(dataPath,"r") as f:
         d = f.read()
 
     data= json.loads(d)
 
+    #----------convert JSON to dictionary----
     workingData = {}
 
     for phoneNo in data:
@@ -35,48 +48,52 @@ def main():
     chrome_options = webdriver.ChromeOptions()
     #option.add_argument("-incognito")
 
-    chrome_options.add_argument("user-data-dir=selenium") #save cookies
+    chrome_options.add_argument("user-data-dir=" + seleniumPath) #save cookies
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1920x1080")
 
-    driver = webdriver.Chrome(executable_path='../chromedriver.exe', chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path=chromeDriverPath, chrome_options=chrome_options)
 
     driver.get("https://howdy.tamu.edu/uPortal/normal/render.uP")
 
-    #Wait 10 seconds for page to load before throwing exception
+    time.sleep(10)
 
-    timeout = 10
+    #-----------check if logged in------------------
 
+    if driver.find_elements_by_xpath("//a[@class='btn-group btn btn-lg btn-aggie']")[0].is_displayed():
+        driver.find_elements_by_xpath("//a[@class='btn-group btn btn-lg btn-aggie']")[0].click()
+
+        time.sleep(3)
+
+        #LOGIN TO CAS
+        text_area = driver.find_element_by_id('username')
+
+        text_area.send_keys(username)
+
+        driver.find_elements_by_xpath("//button[@class='thinking-anim']")[0].click()
+
+        time.sleep(3)
+        
+        driver.find_element_by_id('password').send_keys(password)
+
+        driver.find_elements_by_xpath("//button[@class='thinking-anim']")[0].click()
+
+        time.sleep(5)
+
+    else:
+        print("Element of class='btn-group btn btn-lg btn-aggie' was not found. Page may not have loaded or already logged in!")
+
+
+    #Go to registration page
+    driver.get('https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/ssb/term/termSelection?mode=registration')
+
+    #------------if not logged in at this point, throw exception---------
     try:
-        WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.XPATH,"//a[@class='btn-group btn btn-lg btn-aggie']")))
-
+        WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//a[@id='registerLink']")))
     except TimeoutException:
-        print("Element was not found. Page may not have loaded!")
+        print("Could not find element with id='registerLink'")
         driver.quit()
 
-    #find_elements_by_xpath return an array of selenium objects.
-
-    driver.find_elements_by_xpath("//a[@class='btn-group btn btn-lg btn-aggie']")[0].click()
-
-    time.sleep(3)
-
-    #LOGIN TO CAS
-    text_area = driver.find_element_by_id('username')
-
-    login = open('login.txt', 'r')
-    loginInfo = login.read().splitlines()
-    username = loginInfo[0]
-    text_area.send_keys(username)
-
-    driver.find_elements_by_xpath("//button[@class='thinking-anim']")[0].click()
-
-    time.sleep(3)
-    password = loginInfo[1]
-    driver.find_element_by_id('password').send_keys(password)
-
-    driver.find_elements_by_xpath("//button[@class='thinking-anim']")[0].click()
-
-    time.sleep(5)
-
-    driver.get('https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/ssb/term/termSelection?mode=registration')
 
     driver.find_element_by_id('registerLink').click()
 
@@ -88,6 +105,8 @@ def main():
     driver.find_element_by_id("term-go").click()
 
     time.sleep(5)
+
+    #-------------starting page at find classes page------------
 
     def getAvailability(subject, courseNo, CRN):
         
@@ -111,6 +130,7 @@ def main():
         availability = container[0].find_elements_by_xpath('.//span[@dir="ltr"]')[2].text
 
         driver.find_element_by_id('search-again-button').click()
+        print(subject + " " + courseNo + " CRN: " + CRN + " Open Spots: " + availability)
         
         if int(availability) > 0:
             return subject + " " + courseNo + " CRN: " + CRN + " is available! Open Spots: " + availability
@@ -118,7 +138,7 @@ def main():
             return ''
 
 
-    client = Client(loginInfo[2], loginInfo[3])
+    client = Client(twilioSID, twilioAUTH)
     for num in workingData:
         message = 'Courses you want are open!\n'
         foundOpen = 0
@@ -128,8 +148,8 @@ def main():
                 foundOpen += 1
         
         if foundOpen:
-            message = client.messages.create(to=num, from_="+17739662304",
-                                    body=message)
+            print(message)
+            message = client.messages.create(to=num, from_="+17739662304", body=message)
 
 
 if __name__ == '__main__':
