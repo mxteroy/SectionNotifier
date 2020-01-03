@@ -1,1 +1,11 @@
 *.txt
+
+.vscode
+
+env/
+
+selenium/
+
+*.exe
+
+debug.log
