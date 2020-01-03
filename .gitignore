@@ -9,3 +9,5 @@ selenium/
 *.exe
 
 debug.log
+
+data.json
