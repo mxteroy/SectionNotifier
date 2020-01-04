@@ -49,8 +49,8 @@ def main():
     #option.add_argument("-incognito")
 
     chrome_options.add_argument("user-data-dir=" + seleniumPath) #save cookies
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--window-size=1920x1080")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1920x1080")
 
     driver = webdriver.Chrome(executable_path=chromeDriverPath, chrome_options=chrome_options)
 
