@@ -49,8 +49,8 @@ def main():
     #option.add_argument("-incognito")
 
     chrome_options.add_argument("user-data-dir=" + seleniumPath) #save cookies
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--window-size=1920x1080")
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--window-size=1920x1080")
 
     driver = webdriver.Chrome(executable_path=chromeDriverPath, chrome_options=chrome_options)
 
@@ -60,7 +60,7 @@ def main():
 
     #-----------check if logged in------------------
 
-    if driver.find_elements_by_xpath("//a[@class='btn-group btn btn-lg btn-aggie']")[0].is_displayed():
+    if len(driver.find_elements_by_xpath("//a[@class='btn-group btn btn-lg btn-aggie']")) > 0:
         driver.find_elements_by_xpath("//a[@class='btn-group btn btn-lg btn-aggie']")[0].click()
 
         time.sleep(3)
@@ -80,30 +80,31 @@ def main():
 
         time.sleep(5)
 
+        driver.get('https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/ssb/classRegistration/classRegistration')
+
+        try:
+            WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//a[@id='registerLink']")))
+        except TimeoutException:
+            print("Could not find element with id='registerLink'")
+            driver.quit()
+
+        time.sleep(2)
+        driver.find_element_by_id('registerLink').click()
+
+        driver.find_element_by_id('select2-chosen-1').click()
+
+        time.sleep(3)
+        driver.find_element_by_id(str(date)).click()
+        time.sleep(3)
+        driver.find_element_by_id("term-go").click()
     else:
         print("Element of class='btn-group btn btn-lg btn-aggie' was not found. Page may not have loaded or already logged in!")
+        driver.get('https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/ssb/classRegistration/classRegistration')
 
 
     #Go to registration page
-    driver.get('https://compassxe-ssb.tamu.edu/StudentRegistrationSsb/ssb/term/termSelection?mode=registration')
 
-    #------------if not logged in at this point, throw exception---------
-    try:
-        WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//a[@id='registerLink']")))
-    except TimeoutException:
-        print("Could not find element with id='registerLink'")
-        driver.quit()
-
-
-    driver.find_element_by_id('registerLink').click()
-
-    driver.find_element_by_id('select2-chosen-1').click()
-
-    time.sleep(3)
-    driver.find_element_by_id(str(date)).click()
-    time.sleep(3)
-    driver.find_element_by_id("term-go").click()
-
+    
     time.sleep(5)
 
     #-------------starting page at find classes page------------
@@ -122,7 +123,12 @@ def main():
 
         driver.find_element_by_id('search-go').click()
 
-        time.sleep(3)
+        time.sleep(5)
+
+        #value="200"
+        if driver.find_element_by_xpath('//option[@value="200"]').get_attribute('selected') is None:
+            driver.find_element_by_xpath('//option[@value="200"]').click()
+            time.sleep(4)
 
         dataTypeNo = driver.find_element_by_xpath('//td[contains(text(), "'+ CRN + '") ]').get_attribute('data-id')
         print(dataTypeNo)
@@ -150,6 +156,8 @@ def main():
         if foundOpen:
             print(message)
             message = client.messages.create(to=num, from_="+17739662304", body=message)
+
+    driver.quit()
 
 
 if __name__ == '__main__':
